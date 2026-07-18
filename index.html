@@ -42,14 +42,15 @@
         }
 
         .gif-container img {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
+            width: 180px;
+            height: 220px;
+            object-fit: cover;
             margin-bottom: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
 
-        /* ปรับตรงนี้ให้จัดปุ่มอยู่ตรงกลางแบบไม่ทับกัน */
         .btn-group {
             display: flex;
             justify-content: center;
@@ -84,7 +85,7 @@
             color: #333;
             transition: all 0.1s ease;
             z-index: 5;
-            position: relative; /* เริ่มต้นให้เรียงต่อกันปกติ ไม่ทับกัน */
+            position: relative;
         }
 
         @keyframes heartbeat {
@@ -101,8 +102,8 @@
 
     <div class="container" id="mainBox">
         <div class="gif-container">
-            <!-- เปลี่ยนเป็นลิงก์รูปแมวอ้อนอันใหม่ ชัวร์แน่นอน -->
-            <img id="statusGif" src="https://media.tenor.com/images/84cf3e433db9b9c9480d191244e87661/tenor.gif" alt="cute cat">
+            <!-- 📸 ลิงก์รูปแรก (รูปหล่อๆ ของนาย) -->
+            <img id="statusGif" src="ใส่ลิงก์รูปแรกตรงนี้" alt="my photo">
         </div>
         
         <h1 id="titleText">Happy Anniversary นะคะคุณแฟน 💖</h1>
@@ -110,6 +111,7 @@
 
         <div class="btn-group">
             <button id="yesBtn" onclick="selectYes()">รักที่สุด</button>
+            <!-- 🛠️ แก้ไขตรงนี้: เรียกใช้ handleNoAction เพื่อให้วิ่งหนีและเปลี่ยนเป็นรูปร้องไห้ที่ถูกต้อง -->
             <button id="noBtn" onmouseover="handleNoAction()" onclick="handleNoAction()">ไม่รัก</button>
         </div>
     </div>
@@ -123,27 +125,38 @@
 
         let currentScale = 1;
 
+        // 🔗 ใส่ลิงก์รูปภาพที่นายลบพื้นหลังแล้วตรงนี้ได้เลย
+        const startPhoto = "ใส่ลิงก์รูปแรกตรงนี้"; 
+        const cryPhoto = "ใส่ลิงก์รูปร้องไห้ตรงนี้";
+        const happyGif = "https://media.tenor.com/images/30713b10b00790b070407a56112ed2f0/tenor.gif"; 
+
+        // ฟังก์ชันเมื่อพยายามกด "ไม่รัก" (ปุ่มวิ่งหนี + หน้าเปลี่ยนเป็นร้องไห้)
         function handleNoAction() {
-            // สุ่มพิกัดใหม่ให้อยู่บนหน้าจอ
+            // 1. สุ่มพิกัดให้ปุ่มวิ่งหนี
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
-            
-            // เปลี่ยนเป็น fixed ทันทีเมื่อจะกด เพื่อให้มันวิ่งหนีออกไปนอกกรอบได้
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            // ขยายปุ่มรัก
+            // 2. ขยายปุ่มรักให้ใหญ่ขึ้นเรื่อยๆ
             currentScale += 0.25;
             yesBtn.style.setProperty('--btn-scale', currentScale);
+
+            // 3. เปลี่ยนรูปเป็นหน้าร้องไห้ + เปลี่ยนข้อความงอน
+            statusGif.src = cryPhoto;
+            titleText.innerText = "เสียใจอ่าาาา 🥺";
+            questionText.innerText = "ทำไมจะกดไม่รักเค้าล่ะ แงงงงงงงง";
         }
 
+        // ฟังก์ชันเมื่อกด "รักที่สุด" (สำเร็จ!)
         function selectYes() {
-            titleText.innerText = "เย้ๆๆๆๆ! ฮั่นแน่ รู้อยู่แล้วว่ารัก ❤️";
-            questionText.innerText = "เค้าก็รักตัวเองเหมือนกันนะ อยู่ด้วยกันไปนานๆ นะครับ 🥰";
+            titleText.innerText = "เค้าก้รักแพมเหมือนกันนน้าา ❤️";
+            questionText.innerText = "อยู่ด้วยกันไปนานๆ นะครับ 🥰";
             
-            // เปลี่ยนเป็นรูปแมวส่งหัวใจฟินๆ
-            statusGif.src = "https://media.tenor.com/images/30713b10b00790b070407a56112ed2f0/tenor.gif";
+            statusGif.src = happyGif; 
+            statusGif.style.width = "160px";
+            statusGif.style.height = "160px";
             
             noBtn.style.display = 'none';
             yesBtn.style.animation = 'none';
@@ -154,4 +167,3 @@
     </script>
 </body>
 </html>
-
