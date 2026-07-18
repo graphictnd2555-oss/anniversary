@@ -102,8 +102,8 @@
 
     <div class="container" id="mainBox">
         <div class="gif-container">
-            <!-- 📸 ลิงก์รูปแรก (รูปหล่อๆ ของนาย) -->
-            <img id="statusGif" src="ใส่ลิงก์รูปแรกตรงนี้" alt="my photo">
+            <!-- 📸 เรียกชื่อไฟล์รูปแรกตรงๆ จากใน GitHub ของนายได้เลย -->
+            <img id="statusGif" src="me.png" alt="my photo">
         </div>
         
         <h1 id="titleText">Happy Anniversary นะคะคุณแฟน 💖</h1>
@@ -111,7 +111,6 @@
 
         <div class="btn-group">
             <button id="yesBtn" onclick="selectYes()">รักที่สุด</button>
-            <!-- 🛠️ แก้ไขตรงนี้: เรียกใช้ handleNoAction เพื่อให้วิ่งหนีและเปลี่ยนเป็นรูปร้องไห้ที่ถูกต้อง -->
             <button id="noBtn" onmouseover="handleNoAction()" onclick="handleNoAction()">ไม่รัก</button>
         </div>
     </div>
@@ -125,12 +124,10 @@
 
         let currentScale = 1;
 
-        // 🔗 ใส่ลิงก์รูปภาพที่นายลบพื้นหลังแล้วตรงนี้ได้เลย
-        const startPhoto = "ใส่ลิงก์รูปแรกตรงนี้"; 
-        const cryPhoto = "ใส่ลิงก์รูปร้องไห้ตรงนี้";
+        // 🔗 ดึงชื่อไฟล์รูปร้องไห้ที่อยู่ใน GitHub ของนาย
+        const cryPhoto = "cry.png"; 
         const happyGif = "https://media.tenor.com/images/30713b10b00790b070407a56112ed2f0/tenor.gif"; 
 
-        // ฟังก์ชันเมื่อพยายามกด "ไม่รัก" (ปุ่มวิ่งหนี + หน้าเปลี่ยนเป็นร้องไห้)
         function handleNoAction() {
             // 1. สุ่มพิกัดให้ปุ่มวิ่งหนี
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
@@ -143,16 +140,15 @@
             currentScale += 0.25;
             yesBtn.style.setProperty('--btn-scale', currentScale);
 
-            // 3. เปลี่ยนรูปเป็นหน้าร้องไห้ + เปลี่ยนข้อความงอน
+            // 3. เปลี่ยนเป็นรูปร้องไห้ และเปลี่ยนข้อความงอน
             statusGif.src = cryPhoto;
             titleText.innerText = "เสียใจอ่าาาา 🥺";
             questionText.innerText = "ทำไมจะกดไม่รักเค้าล่ะ แงงงงงงงง";
         }
 
-        // ฟังก์ชันเมื่อกด "รักที่สุด" (สำเร็จ!)
         function selectYes() {
-            titleText.innerText = "เค้าก้รักแพมเหมือนกันนน้าา ❤️";
-            questionText.innerText = "อยู่ด้วยกันไปนานๆ นะครับ 🥰";
+            titleText.innerText = "เย้ๆๆๆๆ! ฮั่นแน่ รู้อยู่แล้วว่ารัก ❤️";
+            questionText.innerText = "เค้าก็รักตัวเองเหมือนกันนะ อยู่ด้วยกันไปนานๆ นะครับ 🥰";
             
             statusGif.src = happyGif; 
             statusGif.style.width = "160px";
