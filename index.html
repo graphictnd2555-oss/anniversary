@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Prompt', sans-serif;
-            background-color: #ffe6e6; /* สีชมพูพาสเทลหวานๆ */
+            background-color: #ffe6e6;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -26,8 +26,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             max-width: 350px;
             width: 90%;
-            position: relative;
-            z-index: 1;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -43,26 +42,32 @@
         }
 
         .gif-container img {
-            width: 150px;
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
             margin-bottom: 20px;
+            border-radius: 10px;
         }
 
+        /* ปรับตรงนี้ให้จัดปุ่มอยู่ตรงกลางแบบไม่ทับกัน */
         .btn-group {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            height: 100px; /* เพิ่มพื้นที่ให้ปุ่มขยาย */
+            gap: 15px;
+            min-height: 120px;
             position: relative;
+            width: 100%;
         }
 
         button {
-            padding: 10px 25px;
+            padding: 12px 25px;
             font-size: 18px;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         #yesBtn {
@@ -70,21 +75,18 @@
             color: white;
             box-shadow: 0 5px 10px rgba(255, 77, 109, 0.3);
             transition: transform 0.2s ease;
-            z-index: 10; /* ให้ปุ่มรักอยู่ด้านบนสุดเวลาขยายใหญ่ */
-            /* ใส่แอนิเมชันให้ปุ่มขยับเต้นตุบๆ ดึงดูดสายตา */
+            z-index: 10;
             animation: heartbeat 1.2s infinite; 
         }
 
         #noBtn {
             background-color: #ccc;
             color: #333;
-            position: absolute;
-            left: 180px; 
             transition: all 0.1s ease;
             z-index: 5;
+            position: relative; /* เริ่มต้นให้เรียงต่อกันปกติ ไม่ทับกัน */
         }
 
-        /* เอฟเฟกต์ปุ่มรักเต้นดุ๊กดิ๊ก */
         @keyframes heartbeat {
             0% { transform: scale(var(--btn-scale, 1)); }
             20% { transform: scale(calc(var(--btn-scale, 1) * 1.08)); }
@@ -99,7 +101,8 @@
 
     <div class="container" id="mainBox">
         <div class="gif-container">
-            <img id="statusGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3BndjJ0ZXB2c3d5cXd5OHd5OHd5OHd5OHd5OHd5OHd5OHd5OHd5JnB0PT1zJnY9MSZjdD1z/L4lvBpHWkARt7gocGF/giphy.gif" alt="cute cat">
+            <!-- เปลี่ยนเป็นลิงก์รูปแมวอ้อนอันใหม่ ชัวร์แน่นอน -->
+            <img id="statusGif" src="https://media.tenor.com/images/84cf3e433db9b9c9480d191244e87661/tenor.gif" alt="cute cat">
         </div>
         
         <h1 id="titleText">Happy Anniversary นะคะคุณแฟน 💖</h1>
@@ -118,32 +121,30 @@
         const questionText = document.getElementById('questionText');
         const statusGif = document.getElementById('statusGif');
 
-        let currentScale = 1; // ขนาดเริ่มต้นของปุ่มรัก
+        let currentScale = 1;
 
-        // ฟังก์ชันจัดการเมื่อแฟนพยายามกด "ไม่รัก"
         function handleNoAction() {
-            // 1. สั่งปุ่มไม่รักวิ่งหนี
+            // สุ่มพิกัดใหม่ให้อยู่บนหน้าจอ
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
             
+            // เปลี่ยนเป็น fixed ทันทีเมื่อจะกด เพื่อให้มันวิ่งหนีออกไปนอกกรอบได้
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            // 2. ขยายปุ่มรักให้ใหญ่ขึ้นเรื่อยๆ ทุกครั้งที่กดไม่รัก
-            currentScale += 0.25; // เพิ่มขนาดทีละ 25%
+            // ขยายปุ่มรัก
+            currentScale += 0.25;
             yesBtn.style.setProperty('--btn-scale', currentScale);
         }
 
-        // ฟังก์ชันเมื่อกดปุ่ม "รักที่สุด"
         function selectYes() {
             titleText.innerText = "เย้ๆๆๆๆ! ฮั่นแน่ รู้อยู่แล้วว่ารัก ❤️";
             questionText.innerText = "เค้าก็รักตัวเองเหมือนกันนะ อยู่ด้วยกันไปนานๆ นะครับ 🥰";
             
-            // เปลี่ยนเป็นรูปหัวใจหวานๆ
-            statusGif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3d5OHd5OHd5OHd5OHd5OHd5OHd5OHd5OHd5OHd5OHd5OHd5JnB0PT1zJnY9MSZjdD1z/26fldmSiD5SUdBFIY/giphy.gif";
+            // เปลี่ยนเป็นรูปแมวส่งหัวใจฟินๆ
+            statusGif.src = "https://media.tenor.com/images/30713b10b00790b070407a56112ed2f0/tenor.gif";
             
-            // เคลียร์ทุกอย่าง ลบปุ่มไม่รักทิ้ง ลบแอนิเมชันเต้นออก
             noBtn.style.display = 'none';
             yesBtn.style.animation = 'none';
             yesBtn.style.transform = 'scale(1.3)';
@@ -153,3 +154,4 @@
     </script>
 </body>
 </html>
+
